@@ -9,13 +9,13 @@ Tropical Cyclones
    :glob:
    :hidden:
 
-   ../../../notebooks/tropical_cyclones/*
+   ../notebooks/tropical_cyclones/*
 
 Rossby Wave Breaking
 ----------------------
 
 .. nbgallery::
-   :name: rossby-wave-breaking
+   :name: rossby_wave_breaking
    :glob:
    :hidden:
 
