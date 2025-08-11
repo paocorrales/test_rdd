@@ -1,12 +1,30 @@
 .wy-side-nav-search {
-  background-color: #05C1E8;
+  background-color: #0C93BD;
 }
 
-html[data-theme="light"] {
-    --sd-color-primary: #05C1E8;
+.wy-nav-side {
+  background: #C9C9CA;
 }
 
-html[data-theme="dark"] {
-    --sd-color-primary: #05C1E8;
+.wy-menu-vertical a {
+  color: #231F20;
+}   
+
+body {
+  font: 400 18px/1.8 'Lato', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  min-height: 100%;
+} 
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Lato', Helvetica, Arial, sans-serif;
+  color: #0C93BD;
 }
 
+.wy-nav-content {
+  background: #F7F7F7;
+} 
+
+.wy-nav-content-wrap {
+  background: #F7F7F7;
+}

@@ -34,6 +34,13 @@ templates_path = ['_templates']
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 html_css_files = ["custom.css"]
-
+html_logo = '_static/logo.png'
+html_theme_options = {
+    'logo_only': True,
+}
+html_context = {
+    'display_github': True,
+    'github_repo': 'paocorrales/test_rdd',
+}
 # -- Options for EPUB output
 epub_show_urls = 'footnote'
