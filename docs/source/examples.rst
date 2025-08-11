@@ -1,8 +1,24 @@
 Examples
 ========
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+Tropical Cyclones
+-----------------
 
-   ../notebooks/detect_and_track_RWB_ERA5
+.. nbgallery::
+   :name: tropical-cyclones
+   :glob:
+   :hidden:
+
+   ../../../notebooks/tropical_cyclones/*
+
+Rossby Wave Breaking
+----------------------
+
+.. nbgallery::
+   :name: rossby-wave-breaking
+   :glob:
+   :hidden:
+
+   ../notebooks/rossby_wave_breaking/*
+
+
