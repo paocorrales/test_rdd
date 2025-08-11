@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detect and track Rossby wave breaking by overturned potential-temperature contours on the dynamical tropopause &mdash; Lumache 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f965773c" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Examples" href="../examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Lumache
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Detect and track Rossby wave breaking by overturned potential-temperature contours on the dynamical tropopause</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Lumache</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../examples.html">Examples</a></li>
+      <li class="breadcrumb-item active">Detect and track Rossby wave breaking by overturned potential-temperature contours on the dynamical tropopause</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/detect_and_track_RWB_ERA5.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Detect-and-track-Rossby-wave-breaking-by-overturned-potential-temperature-contours-on-the-dynamical-tropopause">
+<h1>Detect and track Rossby wave breaking by overturned potential-temperature contours on the dynamical tropopause<a class="headerlink" href="#Detect-and-track-Rossby-wave-breaking-by-overturned-potential-temperature-contours-on-the-dynamical-tropopause" title="Link to this heading"></a></h1>
+<p>This recipe identifies and tracks overturning contours as a proxy for Rossby wave breaking. It smooths and identifies potential temperature overturned contours on the dynamical tropopause (2 PVU surface) at 5K intervals and tracks them by looking for zones which overlap. It can easily be tweaked to track potential vorticity on isentropic surfaces as in Barnes et. al. (2025)</p>
+<p>References: Code based on and adapted from: Kaderli, S., 2023. WaveBreaking - Detection, Classification and Tracking of Rossby Wave Breaking. <a class="reference external" href="https://doi.org/10.5281/zenodo.14214463">https://doi.org/10.5281/zenodo.14214463</a> Used in: Barnes, M. A., M. J. Reeder, and T. Ndarana, 2025: Rossby wave breaking morphologies on the Southern Hemisphere dynamical tropopause. J. Climate, <a class="reference external" href="https://doi.org/10.1175/JCLI-D-24-0461.1">https://doi.org/10.1175/JCLI-D-24-0461.1</a>, in press.</p>
+<p>Load the python functions required for data handling</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">windspharm.xarray</span> <span class="kn">import</span> <span class="n">VectorWind</span>
+</pre></div>
+</div>
+</div>
+<p>Set and load the paths for your local WxSysLib installation.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;WXSYSLIBDIR&quot;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;/g/data/gb02/mb0427/WxSysLib&#39;</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;WXSYSLIBDIR&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<p>Set and load the Rossby wave breaking modules within WxSysLib</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;RWBLIBDIR&quot;</span><span class="p">]</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;WXSYSLIBDIR&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">/utils/blobs/WaveBreaking&#39;</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;RWBLIBDIR&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<p>Import all the required WxSysLib functions (see WxSysLib documentation for details)</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">utils.general.nci_utils</span> <span class="kn">import</span> <span class="n">get_GADI_ERA5_filename</span>
+<span class="kn">from</span> <span class="nn">utils.general.date_utils</span> <span class="kn">import</span> <span class="n">generate_datetimes</span><span class="p">,</span><span class="n">generate_datetimes_months</span>
+
+<span class="kn">from</span> <span class="nn">wavebreaking.processing.events</span> <span class="kn">import</span> <span class="n">to_xarray</span><span class="p">,</span> <span class="n">track_events</span>
+<span class="kn">from</span> <span class="nn">wavebreaking.indices.contour_index</span> <span class="kn">import</span> <span class="n">calculate_contours</span>
+<span class="kn">from</span> <span class="nn">wavebreaking.indices.overturning_index</span> <span class="kn">import</span> <span class="n">calculate_overturnings</span>
+<span class="kn">from</span> <span class="nn">wavebreaking.additional_utils</span> <span class="kn">import</span> <span class="n">process_to_geojson</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">calculate_overturnings</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+    Identify overturning structures based on the Overturning Index
+    developed by Barnes and Hartmann (2012).
+    The default parameters for the overturning identification
+    are based on the study by Barnes and Hartmann (2012).
+    The overturning region is represented by a rectangle
+    enclosing all overturning contour points.
+    Dimension names (&#34;time_name&#34;, &#34;lon_name&#34;, &#34;lat_name&#34;), size (&#34;ntime&#34;, &#34;nlon&#34;, &#34;nlat&#34;)
+    and resolution (&#34;dlon&#34;, &#34;dlat&#34;) can be passed as key=value argument.
+    Before the index calculation, the contour lines are calculated if not provided.
+
+    Parameters
+    ----------
+        data : xarray.DataArray
+            data for the contour and overturning calculation
+        contour_levels : array_like
+            levels for contour calculation
+        contours : geopandas.GeoDataFrame, optional
+            contours calculated with wavebreaking.calculate_contours(...,
+            original_coordinates=False)
+        range_group : int or float, optional
+            Maximal degrees in the longitudinal direction in which two overturning are grouped
+        min_exp : int or float, optional
+            Minimal longitudinal expansion of an overturning event
+        intensity : xarray.DataArray, optional
+            data for the intensity calculation (hint: use wb_spatial.calculate_momentum_flux)
+        periodic_add: int or float, optional
+            number of longitudes in degrees to expand the dataset
+            to correctly capture undulations at the date border
+            if the input field is not periodic, use periodic_add = 0
+
+    Returns
+    -------
+        overturnings: geopandas.GeoDataFrame
+            GeoDataFrame containing different characteristics of the overturning events:
+                * &#34;date&#34;: date of the overturning
+                * &#34;level&#34;: level of the contour line
+                * &#34;com&#34;: center of mass in the format (x,y)
+                * &#34;mean_var&#34;: mean of the variable used for the overturning calculations
+                * &#34;event_area&#34;: area of a overturning event;
+                * &#34;intensity&#34;: sum of the intensity (momentum flux)
+                * &#34;orientation&#34;: orientation of the most west- and eastward point
+                * &#34;geometry&#34;: (Multi)Polygon with coordinates in the format (x,y)
+
+</pre></div></div>
+</div>
+<p>Local settings</p>
+<p>sdt = starting month from ERA5 archive | default: datetime(1980,1,1) edt = starting month from ERA5 archive | default: datetime(1980,2,1) outpath = local path to write out output Tnum = Wave number to spectral truncation (required for smoothing data) | default: 21 contour_levels = Contours to detect overturning on track_overlap_p = Percentage overlap to join objects in time | default: 25</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdt</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">edt</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">outpath</span><span class="o">=</span><span class="s1">&#39;/scratch/if69/mb0427/RWB/test&#39;</span>
+<span class="n">Tnum</span> <span class="o">=</span> <span class="mi">21</span>
+<span class="n">contour_levels</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">330</span><span class="p">,</span><span class="mi">335</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">track_overlap_p</span><span class="o">=</span><span class="mi">25</span>
+</pre></div>
+</div>
+</div>
+<p>Load the ERA5 data required and smooth by spectral truncation. NOTE: If you are using the GADI ERA5 archive, you must a be a member of uc16 Find the defined contours and detect overturning zones. Write the output to a geojson file</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first</span><span class="o">=</span><span class="kc">True</span>
+<span class="k">for</span> <span class="n">indt</span> <span class="ow">in</span> <span class="n">generate_datetimes_months</span><span class="p">(</span><span class="n">sdt</span><span class="p">,</span><span class="n">edt</span><span class="p">,</span><span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">indtstr</span><span class="o">=</span><span class="n">indt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Calculating overturning for </span><span class="si">{</span><span class="n">indtstr</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1">#Get the path for the ERA5 isentropic PV file on GADI</span>
+    <span class="n">ptfile</span><span class="o">=</span><span class="n">get_GADI_ERA5_filename</span><span class="p">(</span><span class="s1">&#39;pt&#39;</span><span class="p">,</span><span class="n">indt</span><span class="p">,</span><span class="n">stream</span><span class="o">=</span><span class="s1">&#39;hourly&#39;</span><span class="p">,</span><span class="n">level_type</span><span class="o">=</span><span class="s1">&#39;potential-vorticity&#39;</span><span class="p">)</span>
+    <span class="n">ufile</span><span class="o">=</span><span class="n">get_GADI_ERA5_filename</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span><span class="n">indt</span><span class="p">,</span><span class="n">stream</span><span class="o">=</span><span class="s1">&#39;hourly&#39;</span><span class="p">,</span><span class="n">level_type</span><span class="o">=</span><span class="s1">&#39;potential-vorticity&#39;</span><span class="p">)</span>
+    <span class="n">vfile</span><span class="o">=</span><span class="n">get_GADI_ERA5_filename</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="n">indt</span><span class="p">,</span><span class="n">stream</span><span class="o">=</span><span class="s1">&#39;hourly&#39;</span><span class="p">,</span><span class="n">level_type</span><span class="o">=</span><span class="s1">&#39;potential-vorticity&#39;</span><span class="p">)</span>
+
+    <span class="c1">#Resample the data to 6 hourly</span>
+    <span class="n">f_pt</span><span class="o">=</span><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ptfile</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;6H&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">nearest</span><span class="p">()</span><span class="c1">#.isel(time=slice(0,5))</span>
+    <span class="n">f_u</span><span class="o">=</span><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ufile</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;6H&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">nearest</span><span class="p">()</span><span class="c1">#.isel(time=slice(0,5))</span>
+    <span class="n">f_v</span><span class="o">=</span><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">vfile</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;6H&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">nearest</span><span class="p">()</span><span class="c1">#.isel(time=slice(0,5))</span>
+
+    <span class="c1">#Smooth the data by spectral truncation</span>
+    <span class="n">all_pt_smooth</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">f_pt</span><span class="o">.</span><span class="n">time</span><span class="p">):</span>
+        <span class="n">VW</span> <span class="o">=</span> <span class="n">VectorWind</span><span class="p">(</span><span class="n">f_u</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">f_v</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">v</span><span class="p">,</span><span class="n">legfunc</span><span class="o">=</span><span class="s1">&#39;computed&#39;</span><span class="p">)</span>
+        <span class="n">pt_smooth</span> <span class="o">=</span> <span class="n">VW</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">f_pt</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">pt</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">),</span> <span class="n">truncation</span><span class="o">=</span><span class="n">Tnum</span><span class="p">)</span>
+        <span class="n">all_pt_smooth</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pt_smooth</span><span class="p">)</span>
+    <span class="n">pt_smooth</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">all_pt_smooth</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+
+    <span class="c1">#Retrieve the contours needed to check for overturning</span>
+    <span class="n">contours</span> <span class="o">=</span> <span class="n">calculate_contours</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">pt_smooth</span><span class="p">,</span>
+                                     <span class="n">contour_levels</span><span class="o">=</span><span class="n">contour_levels</span><span class="p">,</span>
+                                     <span class="n">periodic_add</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="c1"># Add additional longitude band onto a periodic boundary</span>
+                                     <span class="n">original_coordinates</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># optional</span>
+
+    <span class="c1">#Check for overturnings [use print(calculate_overturnings.__doc__) for details]</span>
+    <span class="n">overturnings</span> <span class="o">=</span> <span class="n">calculate_overturnings</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">pt_smooth</span><span class="p">,</span>
+                                             <span class="n">contour_levels</span><span class="o">=</span><span class="n">contour_levels</span><span class="p">,</span>
+                                             <span class="n">contours</span><span class="o">=</span><span class="n">contours</span><span class="p">,</span> <span class="c1">#Precalculated contour object calculated by calculate_contours</span>
+                                             <span class="n">range_group</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1">#Maximal degrees in the longitudinal direction in which two overturning are grouped</span>
+                                             <span class="n">min_exp</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># Minimal longitudinal expansion of an overturning event</span>
+                                             <span class="n">periodic_add</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span> <span class="c1"># Add additional longitude band onto a periodic boundary</span>
+
+    <span class="c1">#Save the output to a geojson file</span>
+    <span class="n">outfile</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">outpath</span><span class="si">}</span><span class="s1">/ERA5_2PVU_overturnings_6hrly_</span><span class="si">{</span><span class="n">indtstr</span><span class="si">}</span><span class="s1">.geojson&#39;</span>
+    <span class="n">process_to_geojson</span><span class="p">(</span><span class="n">overturnings</span><span class="p">,</span><span class="n">colnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;com&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s1">&#39;GeoJSON&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Calculating overturning for 198001
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO: HTTP Request: GET https://raw.githubusercontent.com/IrishMarineInstitute/awesome-erddap/master/erddaps.json &#34;HTTP/1.1 200 OK&#34;
+100%|██████████| 124/124 [07:15&lt;00:00,  3.51s/it]
+Calculating contours    : 100%|██████████| 124/124 [01:41&lt;00:00,  1.23it/s]
+Calculating overturnings: 100%|██████████| 248/248 [00:02&lt;00:00, 88.29it/s]
+INFO: Created 239 records
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Calculating overturning for 198002
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 116/116 [06:43&lt;00:00,  3.48s/it]
+Calculating contours    : 100%|██████████| 116/116 [01:25&lt;00:00,  1.36it/s]
+Calculating overturnings: 100%|██████████| 232/232 [00:02&lt;00:00, 95.38it/s]
+INFO: Created 198 records
+</pre></div></div>
+</div>
+<p>Load all the required overturnings from the geojson files and concatenate them into a single dataframe.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concatenated_df</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">indt</span> <span class="ow">in</span> <span class="n">generate_datetimes_months</span><span class="p">(</span><span class="n">sdt</span><span class="p">,</span><span class="n">edt</span><span class="p">,</span><span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">indtstr</span><span class="o">=</span><span class="n">indt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m&#39;</span><span class="p">)</span>
+
+    <span class="n">infile</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">outpath</span><span class="si">}</span><span class="s1">/ERA5_2PVU_overturnings_6hrly_</span><span class="si">{</span><span class="n">indtstr</span><span class="si">}</span><span class="s1">.geojson&#39;</span>
+    <span class="n">indf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">indf</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">concatenated_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indf</span><span class="p">)</span>
+
+<span class="n">concatenated_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">concatenated_df</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Track the overturning zones on each specified contour level by overlap and write the output to a geojson file</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Use print(track_events.__doc__) for details</span>
+<span class="k">for</span> <span class="n">contour_level</span> <span class="ow">in</span> <span class="n">contour_levels</span><span class="p">:</span>
+    <span class="n">tracked</span> <span class="o">=</span> <span class="n">track_events</span><span class="p">(</span><span class="n">events</span><span class="o">=</span><span class="n">concatenated_df</span><span class="p">[</span><span class="n">concatenated_df</span><span class="o">.</span><span class="n">level</span><span class="o">==</span><span class="n">contour_level</span><span class="p">],</span>
+                                    <span class="n">time_range</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="c1">#time range for temporal tracking in hours</span>
+                                    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;by_overlap&quot;</span><span class="p">,</span> <span class="c1">#method for tracking [&quot;by_overlap&quot;, &quot;by_distance&quot;]</span>
+                                    <span class="n">overlap</span><span class="o">=</span><span class="n">track_overlap_p</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="c1">#Minimum percentage overlap should be [float between 0 and 1.0]</span>
+                                    <span class="n">overlap_by</span><span class="o">=</span><span class="s2">&quot;smallest&quot;</span><span class="p">)</span> <span class="c1">#how overlap should be calculated [&quot;union&quot;, &quot;next&quot;, &quot;smallest&quot;]</span>
+
+    <span class="n">outfile</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">outpath</span><span class="si">}</span><span class="s2">/ERA5_2PVU_tracked_p</span><span class="si">{</span><span class="n">track_overlap_p</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">contour_level</span><span class="si">}</span><span class="s2">K_overturnings_6hrly_</span><span class="si">{</span><span class="n">sdt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">edt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.geojson&quot;</span>
+    <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">tracked</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">tracked</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s1">&#39;GeoJSON&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 437/437 [00:00&lt;00:00, 29277.39it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overlaps
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Checking overlaps: 100%|██████████| 1/1 [00:00&lt;00:00,  2.07it/s]
+Indexing sets: 100%|██████████| 285/285 [00:00&lt;00:00, 604641.70it/s]
+Unioning sets:   0%|          | 0/285 [00:00&lt;?, ?it/s]
+Merging groups: 100%|██████████| 361/361 [00:00&lt;00:00, 1356759.63it/s]
+
+Unioning sets:   0%|          | 0/285 [00:00&lt;?, ?it/s]]
+Building output: 100%|██████████| 76/76 [00:00&lt;00:00, 43505.81it/s]
+Assign labels: 100%|██████████| 76/76 [00:00&lt;00:00, 2262.44it/s]
+INFO: Created 437 records
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Smallest label....
+</pre></div></div>
+</div>
+<p>Print out an example of the data. Track IDs are located in the column “label”</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tracked</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+                 date  level   mean_var  intensity  west_lat  east_lat  \
+0 1980-01-01 00:00:00  330.0  330.22000        0.0    -52.50    -41.50
+3 1980-01-01 06:00:00  330.0  329.95999        0.0    -51.00    -43.00
+5 1980-01-01 12:00:00  330.0  328.38000        0.0    -49.50    -43.25
+7 1980-01-01 18:00:00  330.0  328.72000        0.0    -48.75    -42.00
+1 1980-01-01 00:00:00  330.0  329.23999        0.0    -36.50    -51.50
+
+   event_area   orientation   comX   comY  \
+0  2876528.80  anticyclonic -53.75 -43.00
+3  2684390.80  anticyclonic -52.25 -41.75
+5  2466035.20  anticyclonic -50.00 -41.00
+7  2269870.00  anticyclonic -48.00 -41.00
+1   720305.81      cyclonic  57.25 -43.75
+
+                                            geometry  label
+0  POLYGON ((-45.5 -53, -45.5 -34, -61.75 -34, -6...      0
+3  POLYGON ((-45 -52, -45 -32.25, -59.25 -32.25, ...      0
+5  POLYGON ((-43.25 -51, -43.25 -31.75, -56.5 -31...      0
+7  POLYGON ((-41.75 -50.75, -41.75 -32, -54.25 -3...      0
+1  POLYGON ((59.75 -51.5, 59.75 -36.5, 54.75 -36....      1
+</pre></div></div>
+</div>
+<p>Plot the climatology of the tracked objects using clim_xarray</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wavebreaking.processing.events</span> <span class="kn">import</span> <span class="n">to_xarray</span><span class="p">,</span><span class="n">clim_xarray</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the grid one which overturning was detected. NOTE: Requires a time dimension to operate</span>
+<span class="n">ptfile</span> <span class="o">=</span> <span class="n">get_GADI_ERA5_filename</span><span class="p">(</span><span class="s1">&#39;pt&#39;</span><span class="p">,</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1979</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">stream</span><span class="o">=</span><span class="s1">&#39;hourly&#39;</span><span class="p">,</span><span class="n">level_type</span><span class="o">=</span><span class="s1">&#39;potential-vorticity&#39;</span><span class="p">)</span>
+<span class="n">f_pt</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ptfile</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;6H&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">nearest</span><span class="p">()</span><span class="o">.</span><span class="n">pt</span><span class="c1">#.isel(time=slice(0,1))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Plot the wave breaking zones.</span>
+<span class="c1">#clim_xarray converts all of the RWB zone polygons to a given xarray grid and produces a 2D count</span>
+<span class="c1">#of all grid points on which RWB is located</span>
+<span class="n">data_flagged</span> <span class="o">=</span> <span class="n">clim_xarray</span><span class="p">(</span><span class="n">f_pt</span><span class="p">,</span><span class="n">tracked</span><span class="p">)</span>
+<span class="n">data_flagged</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.contour.QuadContourSet at 0x1476d63ec6d0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_detect_and_track_RWB_ERA5_25_1.png" src="../_images/notebooks_detect_and_track_RWB_ERA5_25_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Plot the anticyclonic wave breaking zones</span>
+<span class="n">data_flagged</span> <span class="o">=</span> <span class="n">clim_xarray</span><span class="p">(</span><span class="n">f_pt</span><span class="p">,</span><span class="n">tracked</span><span class="p">[</span><span class="n">tracked</span><span class="o">.</span><span class="n">orientation</span><span class="o">==</span><span class="s1">&#39;anticyclonic&#39;</span><span class="p">])</span>
+<span class="n">data_flagged</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.contour.QuadContourSet at 0x1476d50c4dd0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_detect_and_track_RWB_ERA5_26_1.png" src="../_images/notebooks_detect_and_track_RWB_ERA5_26_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Plot the wave breaking zones whose tracks are at least 24 hours long</span>
+<span class="c1">#First select all the tracks where there are at least 4 overturnings in a track (given it is 6 hourly data)</span>
+<span class="n">tracked_daily</span><span class="o">=</span><span class="n">tracked</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;label&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="o">.</span><span class="n">tolist</span><span class="p">)</span>
+<span class="n">tracked_daily</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">date</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">row</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">tracked_daily</span><span class="o">.</span><span class="n">iterrows</span><span class="p">())]</span>
+<span class="n">tracked_daily</span><span class="o">=</span><span class="n">tracked_daily</span><span class="p">[</span><span class="n">tracked_daily</span><span class="o">.</span><span class="n">N</span><span class="o">&gt;=</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">daily_labels</span><span class="o">=</span><span class="n">tracked_daily</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">tracked_daily</span><span class="o">=</span><span class="n">tracked</span><span class="p">[</span><span class="n">tracked</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">daily_labels</span><span class="p">)]</span>
+
+<span class="c1">#Produce the flagged xarray and plot</span>
+<span class="n">data_flagged</span> <span class="o">=</span> <span class="n">clim_xarray</span><span class="p">(</span><span class="n">f_pt</span><span class="p">,</span><span class="n">tracked_daily</span><span class="p">)</span>
+<span class="n">data_flagged</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+152it [00:00, 19477.99it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.contour.QuadContourSet at 0x1476d618f8d0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_detect_and_track_RWB_ERA5_27_2.png" src="../_images/notebooks_detect_and_track_RWB_ERA5_27_2.png" />
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Graziella.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+.wy-side-nav-search {
+  background-color: #05C1E8;
+}
+
+html[data-theme="light"] {
+    --sd-color-primary: #05C1E8;
+}
+
+html[data-theme="dark"] {
+    --sd-color-primary: #05C1E8;
+}
+
