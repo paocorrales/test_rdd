@@ -25,4 +25,4 @@ Contents
 
    usage
    api
-   examples
+   recipes/index

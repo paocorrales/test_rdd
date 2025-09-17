@@ -1,4 +1,9 @@
+numpy
+xarray
+pandas
+tqdm
+futures
 sphinx
-sphinx-rtd-theme==1.3.0rc1
+sphinx_rtd_theme
 nbsphinx
 sphinx_gallery
